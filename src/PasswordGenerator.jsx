@@ -3,10 +3,11 @@ import { useCallback } from "react";
 import { useState } from "react";
 
 export default function PasswordGenerator() {
-	const [length, setLength] = useState(16);
+	const [length, setLength] = useState(10);
 	const [numberAllowed, setNumberAllowed] = useState(false);
 	const [characterAllowed, setCharacterAllowed] = useState(false);
 	const [password, setPassword] = useState("");
+	const [copied, setCopied] = useState(false);
 
 	const passwordGenerator = useCallback(() => {
 		let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -24,9 +25,14 @@ export default function PasswordGenerator() {
 		setPassword(pass);
 	}, [length, numberAllowed, characterAllowed]);
 
-    function copyPassword() {
-        window.navigator.clipboard.writeText(password);
-    }
+	function copyPassword() {
+		window.navigator.clipboard.writeText(password);
+		setCopied(true);
+
+		setTimeout(() => {
+			setCopied(false);
+		}, 1200);
+	}
 
 	useEffect(() => {
 		passwordGenerator();
@@ -48,8 +54,11 @@ export default function PasswordGenerator() {
 						value={password}
 						readOnly
 					/>
-					<button className="p-2 bg-blue-400 rounded-xl outline-0 w-20 font-medium cursor-pointer" onClick={copyPassword}>
-						Copy
+					<button
+						className="p-2 bg-blue-400 rounded-xl w-20 font-medium transition active:scale-95 hover:bg-blue-500 cursor-pointer"
+						onClick={copyPassword}
+					>
+						{copied ? "Copied!" : "Copy"}
 					</button>
 				</div>
 				<div className="flex gap-3 text-sm font-medium ">
