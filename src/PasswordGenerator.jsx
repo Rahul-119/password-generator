@@ -22,7 +22,11 @@ export default function PasswordGenerator() {
 		}
 
 		setPassword(pass);
-	}, [length, numberAllowed, characterAllowed, setPassword]);
+	}, [length, numberAllowed, characterAllowed]);
+
+    function copyPassword() {
+        window.navigator.clipboard.writeText(password);
+    }
 
 	useEffect(() => {
 		passwordGenerator();
@@ -44,7 +48,7 @@ export default function PasswordGenerator() {
 						value={password}
 						readOnly
 					/>
-					<button className="p-2 bg-blue-400 rounded-xl outline-0 w-20 font-medium">
+					<button className="p-2 bg-blue-400 rounded-xl outline-0 w-20 font-medium cursor-pointer" onClick={copyPassword}>
 						Copy
 					</button>
 				</div>
@@ -55,7 +59,7 @@ export default function PasswordGenerator() {
 							className="w-35 cursor-pointer accent-indigo-500 "
 							min="8"
 							max="32"
-							onChange={(e) => Number(setLength(e.target.value))}
+							onChange={(e) => setLength(Number(e.target.value))}
 							value={length}
 						/>{" "}
 						Length ({length})
